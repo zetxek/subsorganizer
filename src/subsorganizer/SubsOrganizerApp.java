@@ -12,11 +12,8 @@ import org.jdesktop.application.SingleFrameApplication;
  */
 public class SubsOrganizerApp extends SingleFrameApplication {
 
-    /**
-     * At startup create and show the main frame of the application.
-     */
     @Override protected void startup() {
-        show(new SubsOrganizerView(this));
+        show(new SubsOrganizerMain());
     }
 
     /**
