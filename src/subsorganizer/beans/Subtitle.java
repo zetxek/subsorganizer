@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package subsorganizer.beans;
 
 /**
@@ -12,6 +7,9 @@ package subsorganizer.beans;
 public class Subtitle {
     String name;
     String link;
+    String language;
+    String editInfo;
+    String status;
 
     /***********/
     public Subtitle(String name, String link){
@@ -19,6 +17,15 @@ public class Subtitle {
         this.link = link;
     }
 
+    public Subtitle(String name, String link, String language, String editInfo, String status) {
+        this.name = name;
+        this.link = link;
+        this.language = language;
+        this.editInfo = editInfo;
+        this.status = status;
+    }
+
+    
 
     /***********/
 

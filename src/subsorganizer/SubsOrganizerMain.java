@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * SubsOrganizerMain.java
  *
  * Created on 19-oct-2010, 23:26:06
@@ -12,6 +7,7 @@ package subsorganizer;
 
 import java.io.File;
 import java.util.ArrayList;
+import javax.lang.model.util.Elements;
 import subsorganizer.beans.Chapter;
 import subsorganizer.beans.Season;
 import subsorganizer.beans.Serie;
@@ -50,12 +46,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         cmbSeasons = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listChapters = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
         listSubtitles = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         cmbChapters = new javax.swing.JComboBox();
+        btnDownload = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
@@ -65,6 +60,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setName("Form"); // NOI18N
 
+        mainPanel.setAutoscrolls(true);
         mainPanel.setName("mainPanel"); // NOI18N
 
         tabbedPane.setName("tabbedPane"); // NOI18N
@@ -78,7 +74,10 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         folderChooser.setCurrentDirectory(new java.io.File("/"));
         folderChooser.setFileFilter(null);
+        folderChooser.setFileHidingEnabled(false);
         folderChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(subsorganizer.SubsOrganizerApp.class).getContext().getResourceMap(SubsOrganizerMain.class);
+        folderChooser.setToolTipText(resourceMap.getString("folderChooser.toolTipText")); // NOI18N
         folderChooser.setName("folderChooser"); // NOI18N
         folderChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,7 +85,6 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             }
         });
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(subsorganizer.SubsOrganizerApp.class).getContext().getResourceMap(SubsOrganizerMain.class);
         lblInfo.setText(resourceMap.getString("lblInfo.text")); // NOI18N
         lblInfo.setName("lblInfo"); // NOI18N
 
@@ -99,11 +97,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         panelDirectoryLayout.setHorizontalGroup(
             panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, panelDirectoryLayout.createSequentialGroup()
-                .add(lblInfo, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                .add(lblInfo, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(chkRecursive, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 455, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(org.jdesktop.layout.GroupLayout.TRAILING, folderChooser, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE))
+                .add(org.jdesktop.layout.GroupLayout.TRAILING, folderChooser, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE))
         );
         panelDirectoryLayout.setVerticalGroup(
             panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -111,10 +109,10 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                 .add(panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(lblInfo)
                     .add(chkRecursive))
-                .addContainerGap(352, Short.MAX_VALUE))
+                .addContainerGap(377, Short.MAX_VALUE))
             .add(panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(org.jdesktop.layout.GroupLayout.TRAILING, panelDirectoryLayout.createSequentialGroup()
-                    .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(25, Short.MAX_VALUE)
                     .add(folderChooser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 355, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
@@ -135,11 +133,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         panelOutput.setLayout(panelOutputLayout);
         panelOutputLayout.setHorizontalGroup(
             panelOutputLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 924, Short.MAX_VALUE)
+            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
         );
         panelOutputLayout.setVerticalGroup(
             panelOutputLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
 
         tabbedPane.addTab(resourceMap.getString("panelOutput.TabConstraints.tabTitle"), panelOutput); // NOI18N
@@ -192,23 +190,6 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        listChapters.setEnabled(false);
-        listChapters.setName("listChapters"); // NOI18N
-
-        eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedItem.chapters}");
-        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cmbSeasons, eLProperty, listChapters);
-        jListBinding.setDetailBinding(org.jdesktop.beansbinding.ELProperty.create("${name}"));
-        bindingGroup.addBinding(jListBinding);
-
-        listChapters.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                listChaptersValueChanged(evt);
-            }
-        });
-        jScrollPane1.setViewportView(listChapters);
-
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         listSubtitles.setModel(new javax.swing.AbstractListModel() {
@@ -219,7 +200,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         listSubtitles.setName("listSubtitles"); // NOI18N
 
         eLProperty = org.jdesktop.beansbinding.ELProperty.create("${selectedItem.subtitles}");
-        jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cmbChapters, eLProperty, listSubtitles);
+        org.jdesktop.swingbinding.JListBinding jListBinding = org.jdesktop.swingbinding.SwingBindings.createJListBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, cmbChapters, eLProperty, listSubtitles);
         bindingGroup.addBinding(jListBinding);
 
         jScrollPane2.setViewportView(listSubtitles);
@@ -241,39 +222,48 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             }
         });
 
+        btnDownload.setText(resourceMap.getString("btnDownload.text")); // NOI18N
+        btnDownload.setName("btnDownload"); // NOI18N
+        btnDownload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownloadActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout panelSubsLayout = new org.jdesktop.layout.GroupLayout(panelSubs);
         panelSubs.setLayout(panelSubsLayout);
         panelSubsLayout.setHorizontalGroup(
             panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(panelSubsLayout.createSequentialGroup()
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, panelSubsLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
-                    .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .add(18, 18, 18)
-                .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, cmbChapters, 0, 308, Short.MAX_VALUE)
-                    .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, cmbSeasons, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(org.jdesktop.layout.GroupLayout.LEADING, cmbSeries, 0, 210, Short.MAX_VALUE)))
-                .add(18, 18, 18)
-                .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 103, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                        .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 168, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(215, 215, 215))
+                .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, cmbChapters, 0, 326, Short.MAX_VALUE)
+                    .add(cmbSeasons, 0, 326, Short.MAX_VALUE)
+                    .add(cmbSeries, 0, 326, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 103, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(23, 23, 23)
+                .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, btnDownload, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelSubsLayout.setVerticalGroup(
             panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(panelSubsLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 301, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(panelSubsLayout.createSequentialGroup()
-                        .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jLabel1)
+                        .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(cmbSeries, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jLabel1)
                             .add(jLabel4))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -283,12 +273,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                         .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(panelSubsLayout.createSequentialGroup()
                                 .add(jLabel3)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 263, Short.MAX_VALUE))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, panelSubsLayout.createSequentialGroup()
-                                .add(cmbChapters, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)))))
-                .addContainerGap())
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 217, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, cmbChapters, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(btnDownload)
+                .add(50, 50, 50))
         );
 
         tabbedPane.addTab(resourceMap.getString("panelSubs.TabConstraints.tabTitle"), panelSubs); // NOI18N
@@ -297,17 +286,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(tabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE)
-                .addContainerGap())
+            .add(tabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 971, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(tabbedPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 409, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, tabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -341,7 +324,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
                     .add(0, 0, Short.MAX_VALUE)
-                    .add(mainPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(mainPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -350,7 +333,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
                     .add(0, 0, Short.MAX_VALUE)
-                    .add(mainPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(mainPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(0, 0, Short.MAX_VALUE)))
         );
 
@@ -395,25 +378,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmbSeasonsItemStateChanged
 
-    private void listChaptersValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listChaptersValueChanged
-        if (listChapters.getSelectedValues() != null){
-            Chapter[] chaps = (Chapter[]) listChapters.getSelectedValues();
-            for (int i = 0; i < chaps.length ; i ++){
-                System.out.println("capitulo...." + chaps[i].getName());
-            }                
-        }else{
-            System.out.println("null chapters");
-        }
-    }//GEN-LAST:event_listChaptersValueChanged
-
     private void cmbChaptersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbChaptersItemStateChanged
         if (cmbChapters.getSelectedItem() != null){
             Chapter chap = (Chapter) cmbChapters.getSelectedItem();
             //TO-DO: recover chapters and show them
-            Subtitle sub = new Subtitle("Soon you'll be able to download them!", "Link");
-            ArrayList list = new ArrayList();
-            list.add(sub);
-            chap.setSubtitles(list);
+            chap.setSubtitles(subsgetter.getSubtitles(chap));
 
             /*chap.setSubtitles(subsgetter.getChapters((Serie) cmbSeries.getSelectedItem(),
                     (Season) cmbSeasons.getSelectedItem()), chap.getLink());*/
@@ -421,6 +390,16 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             System.out.println("null chapters");
         }
     }//GEN-LAST:event_cmbChaptersItemStateChanged
+
+    private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
+        Object[] subtitles = listSubtitles.getSelectedValues();
+         for (int i = 0; i < subtitles.length; i++){
+             Subtitle sub = (Subtitle) subtitles[i];
+             System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
+         }
+
+
+    }//GEN-LAST:event_btnDownloadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -434,6 +413,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDownload;
     private javax.swing.JCheckBox chkRecursive;
     private javax.swing.JComboBox cmbChapters;
     private javax.swing.JComboBox cmbSeasons;
@@ -444,10 +424,8 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblInfo;
-    private javax.swing.JList listChapters;
     private javax.swing.JList listSubtitles;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;

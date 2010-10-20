@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package subsorganizer.tools;
 
 import java.io.IOException;
@@ -17,6 +13,7 @@ import org.jsoup.select.Elements;
 import subsorganizer.beans.Chapter;
 import subsorganizer.beans.Season;
 import subsorganizer.beans.Serie;
+import subsorganizer.beans.Subtitle;
 
 /**
  *
@@ -102,15 +99,18 @@ public class subsgetter {
         try {
             String url = "http://www.subtitulos.es/ajax_loadShow.php?show=" + serie.getId() + "&season=" + season.getId();
             Document doc = Jsoup.connect(url).get();
-            System.out.println("accediendo a " + url);
+            System.out.println("accessing to " + url);
 
             Elements titles = doc.select("td[colspan=5].NewsTitle");
 
             Iterator it = titles.iterator();
             while (it.hasNext()) {
                 Element el = (Element) it.next();
-                Chapter ch = new Chapter(el.text(), el.text());
-                System.out.println("añadiendo capitulo: " + el.text());
+                Element href = el.children().last();
+
+                Chapter ch = new Chapter(el.text(), href.attr("href"));
+                System.out.println("adding chapter: " + el.text());
+                //" <td colspan="5" class="NewsTitle">  <img src="http://www.subtitulos.es/images/package.png" /> &nbsp; <a href="http://www.subtitulos.es/-%09-the-inbetweeners/3x06"> The Inbetweeners 3x06 - The Camping Trip</a>  </td>"
                 chapters.add(ch);
             }
         } catch (IOException ex) {
@@ -121,29 +121,52 @@ public class subsgetter {
 
     }
 
-public static List<Chapter> getSubtitles(Serie serie, Season season, Chapter chapter) {
-        //http://www.subtitulos.es/ajax_loadShow.php?show=1&season=2
-        List<Chapter> chapters = new ArrayList<Chapter>();
+    public static List<Subtitle> getSubtitles(Chapter chapter) {
+        //http://www.subtitulos.es/-%09-the-inbetweeners/3x06
+        List<Subtitle> subtitles = new ArrayList<Subtitle>();
 
         try {
-            String url = "http://www.subtitulos.es/ajax_loadShow.php?show=" + serie.getId() + "&season=" + season.getId();
+            String url = chapter.getLink();
             Document doc = Jsoup.connect(url).get();
-            System.out.println("accediendo a " + url);
+            System.out.println("accessing to " + url);
 
-            Elements titles = doc.select("td[colspan=5].NewsTitle");
-
-            Iterator it = titles.iterator();
+            //versions title: " Versión HDTV.XVID-LOL, 175.00 MBs"
+            Elements tables = doc.select("table");
+            Iterator<Element> it = tables.iterator();
+            //Iterating the tables - each one has one version
             while (it.hasNext()) {
-                Element el = (Element) it.next();
-                Chapter ch = new Chapter(el.text(), el.text());
-                System.out.println("añadiendo capitulo: " + el.text());
-                chapters.add(ch);
+                Element el = it.next();
+
+                //version name
+                Element title = el.children().select("td[colspan=2].NewsTitle").first();
+                String titleStr = "";
+                if (title != null) {
+                    titleStr = title.text().replace("0.00 MBs", "");
+                }
+
+                //languages - get all subversions: english, español, español latinoamérica...
+                Elements langs = el.children().select(".language");
+                Iterator<Element> itLangs = langs.iterator();
+
+                //Elements links = doc.select("a[href*=updated]");
+                while (itLangs.hasNext()) {
+                    Element language = itLangs.next();
+                    Element status = language.nextElementSibling();
+                    Element link = status.nextElementSibling().select("a").first();
+
+                    String href = link.attr("href");
+
+                    Subtitle sub = new Subtitle(titleStr + " - " + language.text() + " (" + status.text() + ")", href, language.text(), "", status.text());
+                    System.out.println("adding subtitle: " + language.text());
+                    subtitles.add(sub);
+                }
             }
+
         } catch (IOException ex) {
             Logger.getLogger(subsgetter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return chapters;
+        return subtitles;
 
     }
 }
