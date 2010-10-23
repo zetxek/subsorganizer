@@ -82,9 +82,8 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         panelDirectory.setName("panelDirectory"); // NOI18N
 
-        folderChooser.setCurrentDirectory(new java.io.File("/"));
+        folderChooser.setCurrentDirectory(null);
         folderChooser.setFileFilter(null);
-        folderChooser.setFileHidingEnabled(false);
         folderChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(subsorganizer.SubsOrganizerApp.class).getContext().getResourceMap(SubsOrganizerMain.class);
         folderChooser.setToolTipText(resourceMap.getString("folderChooser.toolTipText")); // NOI18N
@@ -119,10 +118,10 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                 .add(panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(lblInfo)
                     .add(chkRecursive))
-                .addContainerGap(377, Short.MAX_VALUE))
+                .addContainerGap(384, Short.MAX_VALUE))
             .add(panelDirectoryLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(org.jdesktop.layout.GroupLayout.TRAILING, panelDirectoryLayout.createSequentialGroup()
-                    .addContainerGap(25, Short.MAX_VALUE)
+                    .addContainerGap(32, Short.MAX_VALUE)
                     .add(folderChooser, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 355, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
@@ -147,7 +146,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         );
         panelOutputLayout.setVerticalGroup(
             panelOutputLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
         );
 
         tabbedPane.addTab(resourceMap.getString("panelOutput.TabConstraints.tabTitle"), panelOutput); // NOI18N
@@ -281,9 +280,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                             .add(cmbSeasons, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(panelSubsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(panelSubsLayout.createSequentialGroup()
-                                .add(jLabel3)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 217, Short.MAX_VALUE))
+                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel3)
                             .add(org.jdesktop.layout.GroupLayout.LEADING, cmbChapters, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(btnDownload)
@@ -300,7 +297,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, tabbedPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, tabbedPane)
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -339,7 +336,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 446, Short.MAX_VALUE)
+            .add(0, 453, Short.MAX_VALUE)
             .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(layout.createSequentialGroup()
                     .add(0, 0, Short.MAX_VALUE)
@@ -406,12 +403,15 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         Serie serie = (Serie)cmbSeries.getSelectedItem();
         Season season = (Season) cmbSeasons.getSelectedItem();
         Chapter chapter = (Chapter) cmbChapters.getSelectedItem();
+
+        File directory = folderChooser.getSelectedFile();
+
         for (int i = 0; i < subtitles.length; i++) {
             Subtitle sub = (Subtitle) subtitles[i];
             System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
             try {
                 String filename = chapter.getName() + ".srt";
-                subsgetter.saveUrl( filename, sub.getLink());
+                subsgetter.saveUrl( directory.getAbsolutePath() + File.pathSeparator + filename, sub.getLink());
             } catch (Exception ex) {
                 Logger.getLogger(SubsOrganizerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
