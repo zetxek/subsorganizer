@@ -1,7 +1,3 @@
-/*
- * SubsOrganizerApp.java
- */
-
 package subsorganizer;
 
 import org.jdesktop.application.Application;

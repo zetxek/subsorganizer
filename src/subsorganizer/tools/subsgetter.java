@@ -1,6 +1,11 @@
 package subsorganizer.tools;
 
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -168,5 +173,35 @@ public class subsgetter {
 
         return subtitles;
 
+    }
+
+    public static void saveUrl(String filename, String urlString) throws MalformedURLException, IOException {
+        BufferedInputStream in = null;
+        FileOutputStream fout = null;
+        try {
+            URL u = new URL(urlString);
+            HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+            huc.setRequestMethod("GET");
+            huc.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
+            huc.setRequestProperty("REFERER", "http://www.subtitulos.es");
+            huc.setUseCaches(false);
+            huc.connect();
+
+            in = new BufferedInputStream(huc.getInputStream());
+            fout = new FileOutputStream(filename);
+
+            byte data[] = new byte[1024];
+            int count;
+            while ((count = in.read(data, 0, 1024)) != -1) {
+                fout.write(data, 0, count);
+            }
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+            if (fout != null) {
+                fout.close();
+            }
+        }
     }
 }

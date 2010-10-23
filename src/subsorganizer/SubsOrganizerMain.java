@@ -5,8 +5,17 @@
  */
 package subsorganizer;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.lang.model.util.Elements;
 import subsorganizer.beans.Chapter;
 import subsorganizer.beans.Season;
@@ -14,6 +23,7 @@ import subsorganizer.beans.Serie;
 import subsorganizer.beans.Subtitle;
 import subsorganizer.tools.subsgetter;
 import subsorganizer.tools.subsrenamer;
+import sun.net.www.http.HttpClient;
 
 /**
  *
@@ -379,24 +389,36 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbSeasonsItemStateChanged
 
     private void cmbChaptersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbChaptersItemStateChanged
-        if (cmbChapters.getSelectedItem() != null){
+        if (cmbChapters.getSelectedItem() != null) {
             Chapter chap = (Chapter) cmbChapters.getSelectedItem();
             //TO-DO: recover chapters and show them
             chap.setSubtitles(subsgetter.getSubtitles(chap));
 
             /*chap.setSubtitles(subsgetter.getChapters((Serie) cmbSeries.getSelectedItem(),
-                    (Season) cmbSeasons.getSelectedItem()), chap.getLink());*/
-        }else{
+            (Season) cmbSeasons.getSelectedItem()), chap.getLink());*/
+        } else {
             System.out.println("null chapters");
         }
     }//GEN-LAST:event_cmbChaptersItemStateChanged
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
         Object[] subtitles = listSubtitles.getSelectedValues();
-         for (int i = 0; i < subtitles.length; i++){
-             Subtitle sub = (Subtitle) subtitles[i];
-             System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
-         }
+        Serie serie = (Serie)cmbSeries.getSelectedItem();
+        Season season = (Season) cmbSeasons.getSelectedItem();
+        Chapter chapter = (Chapter) cmbChapters.getSelectedItem();
+        for (int i = 0; i < subtitles.length; i++) {
+            Subtitle sub = (Subtitle) subtitles[i];
+            System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
+            try {
+                String filename = chapter.getName() + ".srt";
+                subsgetter.saveUrl( filename, sub.getLink());
+            } catch (Exception ex) {
+                Logger.getLogger(SubsOrganizerMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            System.out.print("... DONE!");
+        }
+
 
 
     }//GEN-LAST:event_btnDownloadActionPerformed
