@@ -5,25 +5,15 @@
  */
 package subsorganizer;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.lang.model.util.Elements;
 import subsorganizer.beans.Chapter;
 import subsorganizer.beans.Season;
 import subsorganizer.beans.Serie;
 import subsorganizer.beans.Subtitle;
 import subsorganizer.tools.subsgetter;
 import subsorganizer.tools.subsrenamer;
-import sun.net.www.http.HttpClient;
 
 /**
  *
@@ -404,14 +394,20 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         Season season = (Season) cmbSeasons.getSelectedItem();
         Chapter chapter = (Chapter) cmbChapters.getSelectedItem();
 
-        File directory = folderChooser.getSelectedFile();
+        File selDir = folderChooser.getSelectedFile();
+        //if selected dir in 1st tab is a valid directory we'll use it
+        //else, we'll get the current dir
+        if (selDir == null || !selDir.isDirectory())
+            selDir = folderChooser.getCurrentDirectory();
+
+        System.out.println("Selected directory: " + selDir.getAbsolutePath());
 
         for (int i = 0; i < subtitles.length; i++) {
             Subtitle sub = (Subtitle) subtitles[i];
             System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
             try {
                 String filename = chapter.getName() + ".srt";
-                subsgetter.saveUrl( directory.getAbsolutePath() + File.pathSeparator + filename, sub.getLink());
+                subsgetter.saveUrl( selDir.getAbsolutePath() + File.separator + filename, sub.getLink());
             } catch (Exception ex) {
                 Logger.getLogger(SubsOrganizerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
