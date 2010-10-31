@@ -5,9 +5,12 @@
  */
 package subsorganizer;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jdesktop.application.Action;
 import subsorganizer.beans.Chapter;
 import subsorganizer.beans.Season;
 import subsorganizer.beans.Serie;
@@ -58,6 +61,9 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("subsorganizer/Bundle"); // NOI18N
+        setTitle(bundle.getString("SubsOrganizerMain.title")); // NOI18N
+        setIconImage(getIconImage());
         setName("Form"); // NOI18N
 
         mainPanel.setAutoscrolls(true);
@@ -75,8 +81,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         folderChooser.setCurrentDirectory(null);
         folderChooser.setFileFilter(null);
         folderChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(subsorganizer.SubsOrganizerApp.class).getContext().getResourceMap(SubsOrganizerMain.class);
-        folderChooser.setToolTipText(resourceMap.getString("folderChooser.toolTipText")); // NOI18N
+        folderChooser.setToolTipText(bundle.getString("SubsOrganizerMain.folderChooser.toolTipText")); // NOI18N
         folderChooser.setName("folderChooser"); // NOI18N
         folderChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,11 +89,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             }
         });
 
-        lblInfo.setText(resourceMap.getString("lblInfo.text")); // NOI18N
+        lblInfo.setText(bundle.getString("SubsOrganizerMain.lblInfo.text")); // NOI18N
         lblInfo.setName("lblInfo"); // NOI18N
 
         chkRecursive.setSelected(true);
-        chkRecursive.setText(resourceMap.getString("chkRecursive.text")); // NOI18N
+        chkRecursive.setText(bundle.getString("SubsOrganizerMain.chkRecursive.text")); // NOI18N
         chkRecursive.setName("chkRecursive"); // NOI18N
 
         org.jdesktop.layout.GroupLayout panelDirectoryLayout = new org.jdesktop.layout.GroupLayout(panelDirectory);
@@ -116,7 +121,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        tabbedPane.addTab(resourceMap.getString("panelDirectory.TabConstraints.tabTitle"), panelDirectory); // NOI18N
+        tabbedPane.addTab(bundle.getString("SubsOrganizerMain.panelDirectory.TabConstraints.tabTitle"), panelDirectory); // NOI18N
 
         panelOutput.setName("panelOutput"); // NOI18N
 
@@ -124,8 +129,8 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         txtOutput.setColumns(20);
         txtOutput.setRows(5);
-        txtOutput.setToolTipText(resourceMap.getString("txtOutput.toolTipText")); // NOI18N
         txtOutput.setName("txtOutput"); // NOI18N
+        txtOutput.setToolTipText(bundle.getString("SubsOrganizerMain.txtOutput.toolTipText")); // NOI18N
         txtOutputScrollPane.setViewportView(txtOutput);
 
         org.jdesktop.layout.GroupLayout panelOutputLayout = new org.jdesktop.layout.GroupLayout(panelOutput);
@@ -139,7 +144,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             .add(txtOutputScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
         );
 
-        tabbedPane.addTab(resourceMap.getString("panelOutput.TabConstraints.tabTitle"), panelOutput); // NOI18N
+        tabbedPane.addTab(bundle.getString("SubsOrganizerMain.panelOutput.TabConstraints.tabTitle"), panelOutput); // NOI18N
 
         panelSubs.setName("panelSubs"); // NOI18N
         panelSubs.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -166,11 +171,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+        jLabel1.setText(bundle.getString("SubsOrganizerMain.jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
+        jLabel2.setText(bundle.getString("SubsOrganizerMain.jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
         cmbSeasons.setName("cmbSeasons"); // NOI18N
@@ -186,7 +191,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         });
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(resourceMap.getString("jLabel3.text")); // NOI18N
+        jLabel3.setText(bundle.getString("SubsOrganizerMain.jLabel3.text")); // NOI18N
         jLabel3.setName("jLabel3"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
@@ -205,7 +210,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
         jScrollPane2.setViewportView(listSubtitles);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(resourceMap.getString("jLabel4.text")); // NOI18N
+        jLabel4.setText(bundle.getString("SubsOrganizerMain.jLabel4.text")); // NOI18N
         jLabel4.setName("jLabel4"); // NOI18N
 
         cmbChapters.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -221,7 +226,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             }
         });
 
-        btnDownload.setText(resourceMap.getString("btnDownload.text")); // NOI18N
+        btnDownload.setText(bundle.getString("SubsOrganizerMain.btnDownload.text")); // NOI18N
         btnDownload.setName("btnDownload"); // NOI18N
         btnDownload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,7 +282,7 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
                 .add(50, 50, 50))
         );
 
-        tabbedPane.addTab(resourceMap.getString("panelSubs.TabConstraints.tabTitle"), panelSubs); // NOI18N
+        tabbedPane.addTab(bundle.getString("SubsOrganizerMain.panelSubs.TabConstraints.tabTitle"), panelSubs); // NOI18N
 
         org.jdesktop.layout.GroupLayout mainPanelLayout = new org.jdesktop.layout.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -292,8 +297,8 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         menuBar.setName("menuBar"); // NOI18N
 
-        fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
+        fileMenu.setText(bundle.getString("SubsOrganizerMain.fileMenu.text")); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(subsorganizer.SubsOrganizerApp.class).getContext().getActionMap(SubsOrganizerMain.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
@@ -302,10 +307,11 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
+        helpMenu.setText(bundle.getString("SubsOrganizerMain.helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
-        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setAction(actionMap.get("ShowAboutBox")); // NOI18N
+        aboutMenuItem.setText(bundle.getString("SubsOrganizerMain.aboutMenuItem.text")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -430,6 +436,21 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             }
         });
     }
+
+    @Action
+    public void ShowAboutBox() {
+        new SubsOrganizerAboutBox(this).setVisible(true);
+    }
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("subsorganizer/resources/logo128.png"));
+
+
+        return retValue;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownload;
     private javax.swing.JCheckBox chkRecursive;
