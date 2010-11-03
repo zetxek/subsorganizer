@@ -396,15 +396,16 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
     private void btnDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownloadActionPerformed
         Object[] subtitles = listSubtitles.getSelectedValues();
-        Serie serie = (Serie)cmbSeries.getSelectedItem();
+        Serie serie = (Serie) cmbSeries.getSelectedItem();
         Season season = (Season) cmbSeasons.getSelectedItem();
         Chapter chapter = (Chapter) cmbChapters.getSelectedItem();
 
         File selDir = folderChooser.getSelectedFile();
         //if selected dir in 1st tab is a valid directory we'll use it
         //else, we'll get the current dir
-        if (selDir == null || !selDir.isDirectory())
+        if (selDir == null || !selDir.isDirectory()) {
             selDir = folderChooser.getCurrentDirectory();
+        }
 
         System.out.println("Selected directory: " + selDir.getAbsolutePath());
 
@@ -413,12 +414,28 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
             System.out.println("Downloading... " + sub.getLink() + "... for " + sub.getName());
             try {
                 String filename = chapter.getName() + ".srt";
-                subsgetter.saveUrl( selDir.getAbsolutePath() + File.separator + filename, sub.getLink());
+                File strFile = new File(selDir.getAbsolutePath() + File.separator + filename);
+                File newFile = subsrenamer.getNewName(strFile);
+                //saving the srt file with the new name, if possible
+                if (newFile == null) {
+                    newFile = strFile;
+                }
+
+                txtOutput.append(sub.getName() + ": downloading " + sub.getLink() + " to file " + newFile.getAbsolutePath());
+
+                subsgetter.saveUrl(newFile, sub.getLink());
+
+                if (newFile.exists())
+                    txtOutput.append("... DONE!\n");
+                else
+                    txtOutput.append("... Error! \n");
+
             } catch (Exception ex) {
+                txtOutput.append("Error! " + ex.getLocalizedMessage() + "\n");
                 Logger.getLogger(SubsOrganizerMain.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            System.out.print("... DONE!");
+            
         }
 
 
@@ -450,7 +467,6 @@ public class SubsOrganizerMain extends javax.swing.JFrame {
 
         return retValue;
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDownload;
     private javax.swing.JCheckBox chkRecursive;

@@ -1,6 +1,7 @@
 package subsorganizer.tools;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -167,7 +168,7 @@ public class subsgetter {
                 }
             }
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(subsgetter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -175,7 +176,7 @@ public class subsgetter {
 
     }
 
-    public static void saveUrl(String filename, String urlString) throws MalformedURLException, IOException {
+    public static void saveUrl(File filename, String urlString) throws MalformedURLException, IOException {
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {

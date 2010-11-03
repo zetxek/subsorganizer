@@ -20,16 +20,22 @@ public class subsrenamer {
 
                 //subtitulo. existe avi que tengamos que copiar??
                 if (files[i].getName().contains(".srt")) {
-                    String aviStr = files[i].getName().replace(".srt", ".avi");
-                    aviStr = files[i].getParent() + File.separator + aviStr;
-                    File aviFile = new File(aviStr);
 
-                    if (!aviFile.exists()) {
-                        //File aviFile2 = new File(aviStr.replace(".es", ""));
-                        //System.out.println("NO Existe " + aviFile.getAbsolutePath() + "??");
+                    String aviStr = files[i].getName().replace(".srt", ".avi");
+                    String mkvStr = files[i].getName().replace(".srt", ".mkv");
+
+                    aviStr = files[i].getParent() + File.separator + aviStr;
+                    mkvStr = files[i].getParent() + File.separator + mkvStr;
+
+                    File aviFile = new File(aviStr);
+                    File mkvFile = new File(mkvStr);
+
+                    if (!aviFile.exists() && !mkvFile.exists() ) {
+
                         output.append("\nLooking for video file for " + files[i].getName() + "...");
                         //se obtiene nombre nuevo
                         File newSrt = getNewName(files[i]);
+                        
                         //existe nombre nuevo
                         if (newSrt != null) {
                             //no existe ya
@@ -62,6 +68,11 @@ public class subsrenamer {
         }
     }
 
+    /**
+     *
+     * @param file SRT whose new name we want to get
+     * @return new file name, acording to the video files in the directory
+     */
     public static File getNewName(File file) {
         File result = null;
         try {
@@ -111,11 +122,11 @@ public class subsrenamer {
             File parentFolder = file.getParentFile();
             File[] files = parentFolder.listFiles();
             for (int i = 0; i < files.length; i++) {
-                if (files[i].getName().contains(".avi")
+                if ( (files[i].getName().contains(".avi") || files[i].getName().contains(".mkv"))
                         && files[i].getName().contains(chapter)) {
                     //se obtiene el AVI con extension SRT
                     //System.err.println("DEVOLVIENDO " + files[i].getAbsolutePath());
-                    result = new File(files[i].getAbsolutePath().replace(".avi", ".srt"));
+                    result = new File(files[i].getAbsolutePath().replace(".avi", ".srt").replace(".mkv", ".srt"));
                     return result;
                 }
             }
