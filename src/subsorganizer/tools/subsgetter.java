@@ -27,12 +27,12 @@ import subsorganizer.beans.Subtitle;
  */
 public class subsgetter {
 
-    static String BASE_URL = "http://www.subtitulos.es";
+    static String BASE_URL = "http://www.subswiki.com";
 
     public static List<Serie> getSeries() {
         List<Serie> seriesList = new ArrayList<Serie>();
         try {
-            Document doc = Jsoup.connect("http://www.subtitulos.es/series").get();
+            Document doc = Jsoup.connect("http://www.subswiki.com/shows.php").get();
             //td containing series
             Elements series = doc.getElementsByClass("version");
             //for each serie get the name...
@@ -70,7 +70,7 @@ public class subsgetter {
 
             Element title = null;
             Iterator it = titles.iterator();
-            while (it.hasNext() || !title.html().contains("temporada")) {
+            while (it.hasNext() || !title.html().contains("season")) {
                 title = (Element) it.next();
             }
             /*parsing temps:
@@ -103,7 +103,7 @@ public class subsgetter {
         List<Chapter> chapters = new ArrayList<Chapter>();
 
         try {
-            String url = "http://www.subtitulos.es/ajax_loadShow.php?show=" + serie.getId() + "&season=" + season.getId();
+            String url = "http://www.subswiki.com//ajax_loadShow.php?show=" + serie.getId() + "&season=" + season.getId();
             Document doc = Jsoup.connect(url).get();
             System.out.println("accessing to " + url);
 
@@ -180,11 +180,15 @@ public class subsgetter {
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {
+
+            System.out.println("Trying to download " + urlString + " to " + filename);
+            if (!urlString.contains("http"))
+                urlString = BASE_URL + urlString;
             URL u = new URL(urlString);
             HttpURLConnection huc = (HttpURLConnection) u.openConnection();
             huc.setRequestMethod("GET");
             huc.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
-            huc.setRequestProperty("REFERER", "http://www.subtitulos.es");
+            huc.setRequestProperty("REFERER", "http://www.subswiki.com/");
             huc.setUseCaches(false);
             huc.connect();
 

@@ -1,6 +1,5 @@
 package subsorganizer.beans;
 
-import java.util.ArrayList;
 import java.util.List;
 import subsorganizer.tools.subsgetter;
 
